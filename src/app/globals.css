@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+:root {
+  --cream: #F6ECD9;
+  --steel: #CBD4D9;
+  --steel-dark: #8E9CA3;
+  --turmeric: #EFA13B;
+  --masala: #C8472E;
+  --patta: #52704F;
+  --imli: #7A4566;
+}
+
+@theme inline {
+  --color-cream: #F6ECD9;
+  --color-steel: #CBD4D9;
+  --color-steel-dark: #8E9CA3;
+  --color-turmeric: #EFA13B;
+  --color-masala: #C8472E;
+  --color-patta: #52704F;
+  --color-imli: #7A4566;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background-color: var(--cream);
+  color: #1a1a1a;
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Bricolage Grotesque", "Inter", system-ui, sans-serif;
+}
+
+.font-heading { font-family: "Bricolage Grotesque", "Inter", system-ui, sans-serif; }
+.font-mono-num { font-family: "Space Mono", "Courier New", monospace; }
+
+.thali-3d {
+  transform: perspective(900px) rotateX(18deg) rotateY(-10deg);
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(.22,.61,.36,1);
+  will-change: transform;
+}
+
+.thali-3d:hover {
+  transform: perspective(900px) rotateX(8deg) rotateY(-4deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thali-3d, .thali-3d:hover { transform: none !important; }
+}
+
+.katori-btn {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.katori-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+}
+
+.katori-btn:active { transform: translateY(0); }
+
+.tiffin-tier {
+  transition: all 0.3s ease;
+}
+
+.restaurant-card:hover {
+  box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+}
