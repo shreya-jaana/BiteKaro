@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("customer")
+  karoPoints   Int      @default(0)
+  tier         String   @default("Sprout")
+  byotCount    Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  orders               Order[]
+  recipes              Recipe[]
+  loyaltyTransactions  LoyaltyTransaction[]
+  restaurant           Restaurant?
+}
+
+model Restaurant {
+  id             String   @id @default(cuid())
+  name           String
+  description    String
+  commissionRate Float    @default(0.12)
+  imageUrl       String   @default("")
+  ownerId        String   @unique
+  createdAt      DateTime @default(now())
+
+  owner     User       @relation(fields: [ownerId], references: [id])
+  menuItems MenuItem[]
+  orders    Order[]
+}
+
+model MenuItem {
+  id           String  @id @default(cuid())
+  restaurantId String
+  name         String
+  description  String
+  price        Float
+  moodTags     String
+  imageUrl     String  @default("")
+  recipeId     String?
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+  recipe     Recipe?    @relation(fields: [recipeId], references: [id])
+}
+
+model Order {
+  id           String   @id @default(cuid())
+  userId       String
+  restaurantId String
+  items        String
+  total        Float
+  byot         Boolean  @default(false)
+  pointsEarned Int      @default(0)
+  status       String   @default("Placed")
+  createdAt    DateTime @default(now())
+
+  user         User       @relation(fields: [userId], references: [id])
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  transactions LoyaltyTransaction[]
+}
+
+model Recipe {
+  id              String   @id @default(cuid())
+  userId          String
+  title           String
+  description     String
+  moodTags        String
+  ingredients     String
+  status          String   @default("pending")
+  ordersCount     Int      @default(0)
+  royaltyEarned   Float    @default(0)
+  royaltyPerOrder Float    @default(5)
+  createdAt       DateTime @default(now())
+
+  user      User       @relation(fields: [userId], references: [id])
+  menuItems MenuItem[]
+}
+
+model LoyaltyTransaction {
+  id        String   @id @default(cuid())
+  userId    String
+  points    Int
+  type      String
+  orderId   String?
+  createdAt DateTime @default(now())
+
+  user  User   @relation(fields: [userId], references: [id])
+  order Order? @relation(fields: [orderId], references: [id])
+}
